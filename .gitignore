@@ -1,4 +1,4 @@
-.env
+/.streamlit/secrets.toml
 movies_dict.pkl
 similarity.pkl
 tmdb_5000_credits.csv
