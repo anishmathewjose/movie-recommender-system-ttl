@@ -2,6 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import requests
+from better_profanity import profanity 
 
 def fetch_poster(movie_id):
     response=requests.get('https://api.themoviedb.org/3/movie/{}?api_key={}'.format(movie_id,st.secrets["TMDB"]))
@@ -17,7 +18,10 @@ def recommend(movie):
     for i in movie_list:
         movie_id= movies.iloc[i[0]].movie_id
         recommend_movies.append(movies.iloc[i[0]].title)
-        recommend_movies_posters.append(fetch_poster(movie_id))
+        if profanity.contains_profanity(movies.iloc[i[0]].tags) and filtercontent:
+            recommend_movies_posters.append("https://via.placeholder.com/500x750?text=Adult+Content")
+        else:
+            recommend_movies_posters.append(fetch_poster(movie_id))
     return recommend_movies, recommend_movies_posters
 
 st.title('Movie Recommender System')
@@ -30,6 +34,12 @@ selected_movie = st.selectbox(
     "Type or select a movie from the dropdown",
     movies["title"].values
 )
+
+#Age-Appropriate Filtering
+filtercontent=False
+agefilter = st.checkbox('Enable PG-13 Filter')
+if agefilter:
+    filtercontent=True
 
 if st.button('Recommend'):
     names,posters = recommend(selected_movie)
