@@ -17,10 +17,11 @@ def recommend(movie):
     recommend_movies_posters=[]
     for i in movie_list:
         movie_id= movies.iloc[i[0]].movie_id
-        recommend_movies.append(movies.iloc[i[0]].title)
         if profanity.contains_profanity(movies.iloc[i[0]].tags) and filtercontent:
+            recommend_movies.append('')
             recommend_movies_posters.append("https://via.placeholder.com/500x750?text=Adult+Content")
         else:
+            recommend_movies.append(movies.iloc[i[0]].title)
             recommend_movies_posters.append(fetch_poster(movie_id))
     return recommend_movies, recommend_movies_posters
 
