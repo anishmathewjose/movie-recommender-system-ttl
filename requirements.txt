@@ -1,1 +1,3 @@
 better_profanity
+geocoder
+streamlit-card
